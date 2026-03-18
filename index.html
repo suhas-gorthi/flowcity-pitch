@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlowCity — The Reliable Metro-to-Office Commute Layer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1B6B3A;
+      --primary-light: #2A9D54;
+      --accent: #F59E0B;
+      --accent-dark: #D97706;
+      --dark: #0F172A;
+      --gray-900: #1E293B;
+      --gray-700: #334155;
+      --gray-500: #64748B;
+      --gray-300: #CBD5E1;
+      --gray-100: #F1F5F9;
+      --white: #FFFFFF;
+      --gradient-green: linear-gradient(135deg, #1B6B3A 0%, #2A9D54 100%);
+      --gradient-accent: linear-gradient(135deg, #F59E0B 0%, #F97316 100%);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--gray-900);
+      line-height: 1.6;
+      background: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ---- NAV ---- */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      padding: 0 2rem;
+      transition: box-shadow 0.3s;
+    }
+    nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.08); }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .nav-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700; font-size: 1.5rem; color: var(--primary);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent-dark); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: var(--gray-700); font-size: 0.9rem;
+      font-weight: 500; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--primary); }
+    .nav-cta {
+      background: var(--gradient-green); color: var(--white) !important;
+      padding: 0.5rem 1.25rem; border-radius: 8px; font-weight: 600 !important;
+    }
+    .nav-cta:hover { opacity: 0.9; }
+
+    /* ---- HERO ---- */
+    .hero {
+      padding: 8rem 2rem 5rem;
+      background: linear-gradient(165deg, #F0FDF4 0%, #ECFDF5 40%, #FFF7ED 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute; top: -50%; right: -20%; width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(245,158,11,0.08) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+      align-items: center; position: relative; z-index: 1;
+    }
+    .hero-text h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 3.25rem; font-weight: 800; line-height: 1.15;
+      color: var(--dark); margin-bottom: 1.5rem;
+    }
+    .hero-text h1 .highlight {
+      background: var(--gradient-green);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-text .tagline {
+      font-size: 1.2rem; color: var(--gray-700); margin-bottom: 2rem;
+      max-width: 480px; line-height: 1.7;
+    }
+    .hero-stats {
+      display: flex; gap: 2.5rem; margin-bottom: 2rem;
+    }
+    .hero-stat-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem; font-weight: 700; color: var(--primary);
+    }
+    .hero-stat-label { font-size: 0.8rem; color: var(--gray-500); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
+    .hero-cta {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--gradient-green); color: var(--white);
+      padding: 1rem 2rem; border-radius: 12px; font-weight: 700;
+      font-size: 1.05rem; text-decoration: none;
+      box-shadow: 0 4px 14px rgba(27,107,58,0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(27,107,58,0.4); }
+    .hero-image { display: flex; justify-content: center; }
+    .hero-image img {
+      max-width: 420px; width: 100%; border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+    }
+
+    /* ---- SECTIONS ---- */
+    section { padding: 5rem 2rem; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--primary-light);
+      margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2.25rem; font-weight: 700; color: var(--dark);
+      margin-bottom: 1rem; line-height: 1.25;
+    }
+    .section-subtitle {
+      font-size: 1.05rem; color: var(--gray-500); max-width: 600px;
+      margin-bottom: 3rem; line-height: 1.7;
+    }
+
+    /* ---- PROBLEM ---- */
+    .problem { background: var(--gray-100); }
+    .problem-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+    }
+    .problem-card {
+      background: var(--white); border-radius: 16px; padding: 2rem;
+      border: 1px solid rgba(0,0,0,0.05);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .problem-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
+    .problem-icon {
+      width: 48px; height: 48px; border-radius: 12px; display: flex;
+      align-items: center; justify-content: center; font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .problem-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--dark); }
+    .problem-card p { font-size: 0.9rem; color: var(--gray-500); line-height: 1.6; }
+
+    /* ---- SOLUTION ---- */
+    .solution-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;
+    }
+    .solution-card {
+      background: linear-gradient(160deg, #F0FDF4 0%, var(--white) 100%);
+      border-radius: 16px; padding: 2rem; border: 1px solid rgba(42,157,84,0.12);
+      position: relative; overflow: hidden;
+    }
+    .solution-card::before {
+      content: attr(data-num); position: absolute; top: -10px; right: 10px;
+      font-family: 'Space Grotesk'; font-size: 5rem; font-weight: 800;
+      color: rgba(42,157,84,0.06);
+    }
+    .solution-card h3 {
+      font-size: 1.05rem; font-weight: 700; color: var(--primary);
+      margin-bottom: 0.75rem;
+    }
+    .solution-card p { font-size: 0.9rem; color: var(--gray-700); line-height: 1.65; }
+
+    /* ---- MARKET ---- */
+    .market { background: var(--dark); color: var(--white); }
+    .market .section-label { color: var(--accent); }
+    .market .section-title { color: var(--white); }
+    .market .section-subtitle { color: var(--gray-300); }
+    .market-numbers {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;
+      margin-bottom: 3rem;
+    }
+    .market-num {
+      text-align: center; padding: 2rem; border-radius: 16px;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+    }
+    .market-num-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2.5rem; font-weight: 800; color: var(--accent);
+    }
+    .market-num-label { font-size: 0.85rem; color: var(--gray-300); margin-top: 0.5rem; }
+    .market-corridors {
+      display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center;
+    }
+    .corridor-tag {
+      padding: 0.5rem 1.25rem; border-radius: 100px;
+      background: rgba(42,157,84,0.15); color: #4ADE80;
+      font-size: 0.85rem; font-weight: 600;
+    }
+
+    /* ---- COMPETITIVE ---- */
+    .competitive { background: var(--white); }
+    .comp-table {
+      width: 100%; border-collapse: collapse; border-radius: 16px;
+      overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    }
+    .comp-table thead { background: var(--primary); color: var(--white); }
+    .comp-table th {
+      padding: 1rem 1.25rem; text-align: left;
+      font-size: 0.85rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .comp-table td {
+      padding: 1rem 1.25rem; font-size: 0.9rem; color: var(--gray-700);
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .comp-table tr:last-child td { border-bottom: none; }
+    .comp-table tr:nth-child(even) { background: var(--gray-100); }
+    .comp-table .flowcity-row { background: #F0FDF4 !important; font-weight: 600; }
+    .comp-table .flowcity-row td { color: var(--primary); }
+    .checkmark { color: var(--primary-light); font-weight: 700; }
+    .crossmark { color: #DC2626; }
+
+    /* ---- BUSINESS MODEL ---- */
+    .business-model { background: var(--gray-100); }
+    .bm-timeline {
+      position: relative; padding-left: 3rem;
+    }
+    .bm-timeline::before {
+      content: ''; position: absolute; left: 12px; top: 0; bottom: 0;
+      width: 3px; background: linear-gradient(to bottom, var(--primary), var(--accent));
+      border-radius: 2px;
+    }
+    .bm-phase {
+      position: relative; margin-bottom: 2.5rem; padding: 1.5rem 2rem;
+      background: var(--white); border-radius: 16px;
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+    .bm-phase::before {
+      content: ''; position: absolute; left: -2.35rem; top: 1.75rem;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: var(--primary); border: 3px solid var(--white);
+      box-shadow: 0 0 0 3px var(--primary);
+    }
+    .bm-phase-label {
+      font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--accent-dark);
+      margin-bottom: 0.5rem;
+    }
+    .bm-phase h3 { font-size: 1.1rem; font-weight: 700; color: var(--dark); margin-bottom: 0.5rem; }
+    .bm-phase p { font-size: 0.9rem; color: var(--gray-500); line-height: 1.6; }
+
+    /* ---- TRACTION / ROLLOUT ---- */
+    .rollout-phases {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;
+    }
+    .rollout-card {
+      border-radius: 16px; padding: 2rem; position: relative;
+      border: 2px solid transparent;
+    }
+    .rollout-card.active {
+      background: linear-gradient(var(--white), var(--white)) padding-box,
+                  var(--gradient-green) border-box;
+      box-shadow: 0 8px 30px rgba(27,107,58,0.1);
+    }
+    .rollout-card:not(.active) {
+      background: var(--gray-100); border-color: var(--gray-300);
+    }
+    .rollout-badge {
+      display: inline-block; padding: 0.25rem 0.75rem; border-radius: 100px;
+      font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.05em; margin-bottom: 1rem;
+    }
+    .rollout-card.active .rollout-badge { background: #DCFCE7; color: var(--primary); }
+    .rollout-card:not(.active) .rollout-badge { background: var(--gray-300); color: var(--gray-700); }
+    .rollout-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--dark); }
+    .rollout-card ul { list-style: none; padding: 0; }
+    .rollout-card li {
+      font-size: 0.875rem; color: var(--gray-700); padding: 0.35rem 0;
+      padding-left: 1.25rem; position: relative;
+    }
+    .rollout-card li::before {
+      content: ''; position: absolute; left: 0; top: 0.7rem;
+      width: 6px; height: 6px; border-radius: 50%;
+    }
+    .rollout-card.active li::before { background: var(--primary-light); }
+    .rollout-card:not(.active) li::before { background: var(--gray-500); }
+
+    /* ---- QUOTE ---- */
+    .quote-section {
+      background: var(--gradient-green); color: var(--white);
+      text-align: center; padding: 4rem 2rem;
+    }
+    .quote-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.75rem; font-weight: 600; max-width: 700px;
+      margin: 0 auto; line-height: 1.45;
+    }
+    .quote-attr { margin-top: 1.5rem; font-size: 0.9rem; opacity: 0.8; }
+
+    /* ---- ASK / CTA ---- */
+    .ask {
+      background: linear-gradient(165deg, #0F172A 0%, #1E293B 100%);
+      color: var(--white); text-align: center; padding: 5rem 2rem;
+    }
+    .ask .section-label { color: var(--accent); }
+    .ask .section-title { color: var(--white); margin-bottom: 1.5rem; }
+    .ask-details {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;
+      max-width: 900px; margin: 0 auto 3rem;
+    }
+    .ask-item {
+      padding: 2rem; border-radius: 16px;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    }
+    .ask-item-value {
+      font-family: 'Space Grotesk'; font-size: 1.75rem; font-weight: 800;
+      color: var(--accent);
+    }
+    .ask-item-label { font-size: 0.85rem; color: var(--gray-300); margin-top: 0.5rem; }
+    .ask-cta {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--gradient-accent); color: var(--dark);
+      padding: 1rem 2.5rem; border-radius: 12px;
+      font-weight: 800; font-size: 1.1rem; text-decoration: none;
+      box-shadow: 0 4px 20px rgba(245,158,11,0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .ask-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(245,158,11,0.4); }
+
+    /* ---- FOOTER ---- */
+    footer {
+      background: var(--dark); color: var(--gray-500);
+      padding: 2rem; text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    footer .logo {
+      font-family: 'Space Grotesk'; font-weight: 700; font-size: 1.2rem;
+      color: var(--white); margin-bottom: 0.5rem;
+    }
+    footer .logo span { color: var(--accent); }
+    footer p { font-size: 0.8rem; }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; text-align: center; }
+      .hero-text .tagline { margin-left: auto; margin-right: auto; }
+      .hero-stats { justify-content: center; }
+      .hero-image { order: -1; }
+      .hero-image img { max-width: 320px; }
+      .hero-text h1 { font-size: 2.5rem; }
+      .problem-grid, .solution-grid, .rollout-phases, .ask-details { grid-template-columns: 1fr; }
+      .market-numbers { grid-template-columns: repeat(2, 1fr); }
+      .comp-table { font-size: 0.8rem; }
+      .nav-links { display: none; }
+    }
+
+    /* ---- ANIMATIONS ---- */
+    .fade-up {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">Flow<span>City</span></a>
+    <ul class="nav-links">
+      <li><a href="#problem">Problem</a></li>
+      <li><a href="#solution">Solution</a></li>
+      <li><a href="#market">Market</a></li>
+      <li><a href="#landscape">Landscape</a></li>
+      <li><a href="#model">Business Model</a></li>
+      <li><a href="#roadmap">Roadmap</a></li>
+      <li><a href="#ask" class="nav-cta">Invest Now</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <h1>The <span class="highlight">Last-Mile Reliability</span> Layer for Indian Metro Commuters</h1>
+      <p class="tagline">FlowCity helps metro-linked office commuters complete the most unreliable part of their journey &mdash; the 1&ndash;4 km between station exit and office gate &mdash; reliably, affordably, and on time.</p>
+      <div class="hero-stats">
+        <div>
+          <div class="hero-stat-value">2</div>
+          <div class="hero-stat-label">Launch Cities</div>
+        </div>
+        <div>
+          <div class="hero-stat-value">&lt;&#8377;50</div>
+          <div class="hero-stat-label">Most Routes</div>
+        </div>
+        <div>
+          <div class="hero-stat-value">2x</div>
+          <div class="hero-stat-label">Daily Frequency</div>
+        </div>
+      </div>
+      <a href="#ask" class="hero-cta">Get the Pitch Deck &rarr;</a>
+    </div>
+    <div class="hero-image">
+      <img src="flowcity-hero.png" alt="FlowCity app showing metro-to-office commute planning with total time and cost">
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem" id="problem">
+  <div class="section-inner">
+    <div class="section-label fade-up">The Problem</div>
+    <h2 class="section-title fade-up">The metro ride is the easy part.<br>It's the 18 minutes after that breaks the commute.</h2>
+    <p class="section-subtitle fade-up">India's metros are expanding fast, but ridership consistently underperforms. The reason isn't trunk-route quality &mdash; it's the unpredictable gap between station and destination.</p>
+
+    <div class="problem-grid">
+      <div class="problem-card fade-up">
+        <div class="problem-icon" style="background:#FEF3C7;">&#128663;</div>
+        <h3>Autos Are Unreliable</h3>
+        <p>Inconsistent availability, fare volatility, and "short ride nahi" refusals make autos an unpredictable last-mile option every single morning.</p>
+      </div>
+      <div class="problem-card fade-up">
+        <div class="problem-icon" style="background:#FEE2E2;">&#128176;</div>
+        <h3>Ride-Hailing Is Expensive</h3>
+        <p>Surge pricing on bike taxis and cabs can hit &#8377;94+ for a 2 km ride. Commuters are pushed back to private vehicles, undermining transit investment.</p>
+      </div>
+      <div class="problem-card fade-up">
+        <div class="problem-icon" style="background:#DBEAFE;">&#129300;</div>
+        <h3>No Single Source of Truth</h3>
+        <p>Today's workaround is a stack of Google Maps + WhatsApp groups + local knowledge. Functional, but fragile and exhausting to repeat daily.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTION -->
+<section class="solution" id="solution">
+  <div class="section-inner">
+    <div class="section-label fade-up">The Solution</div>
+    <h2 class="section-title fade-up">One app. Station to office. Sorted.</h2>
+    <p class="section-subtitle fade-up">FlowCity does three jobs extremely well for metro-linked office commuters.</p>
+
+    <div class="solution-grid">
+      <div class="solution-card fade-up" data-num="01">
+        <h3>Smart Commute Cards</h3>
+        <p>Save your route once. Every morning, see today's best low-cost route, most reliable option, and a backup &mdash; no searching required. The card is your default screen.</p>
+      </div>
+      <div class="solution-card fade-up" data-num="02">
+        <h3>Confidence-Rated Options</h3>
+        <p>Every recommendation carries a reliability score with plain-language reasoning: "shared autos delayed" or "walking faster than waiting." Three options, clear tradeoffs, no guesswork.</p>
+      </div>
+      <div class="solution-card fade-up" data-num="03">
+        <h3>Station Intelligence</h3>
+        <p>Best exit gates, wait times by mode, walking vs. ride comparisons, verified pickup points, and rainy-day adjustments &mdash; operational intelligence that generic maps don't surface.</p>
+      </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:2rem; margin-top:2rem;">
+      <div class="solution-card fade-up" data-num="04">
+        <h3>Budget Bands</h3>
+        <p>Options in three honest bands: under &#8377;30, &#8377;30&ndash;60, and &#8377;60+ fastest. No rigid fare promises that break trust. Set your preferred band; the app optimises within it.</p>
+      </div>
+      <div class="solution-card fade-up" data-num="05">
+        <h3>Offline-Ready</h3>
+        <p>Station exits, connector points, walking maps, and fallback routes work even when you're underground or in a congested area with poor network.</p>
+      </div>
+      <div class="solution-card fade-up" data-num="06">
+        <h3>Exception Handling</h3>
+        <p>Missed your connector? One-tap alternate pickup points, contextual nudges like "walk 6 min to save 12 min waiting," and clear fallback guidance.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARKET -->
+<section class="market" id="market">
+  <div class="section-inner">
+    <div class="section-label fade-up">Market Opportunity</div>
+    <h2 class="section-title fade-up">A narrow but massive, recurring need</h2>
+    <p class="section-subtitle fade-up">Millions of office commuters face this problem twice daily across India's rapidly expanding metro cities.</p>
+
+    <div class="market-numbers fade-up">
+      <div class="market-num">
+        <div class="market-num-value">15M+</div>
+        <div class="market-num-label">Daily metro riders across Indian cities</div>
+      </div>
+      <div class="market-num">
+        <div class="market-num-value">70%</div>
+        <div class="market-num-label">Face last-mile connectivity gaps</div>
+      </div>
+      <div class="market-num">
+        <div class="market-num-value">500+</div>
+        <div class="market-num-label">Commute trips per user per year</div>
+      </div>
+      <div class="market-num">
+        <div class="market-num-value">2x</div>
+        <div class="market-num-label">Daily repeat usage opportunity</div>
+      </div>
+    </div>
+
+    <div style="text-align:center;">
+      <p style="color:var(--gray-300); font-size:0.9rem; margin-bottom:1rem; font-weight:500;">Target Launch Corridors</p>
+      <div class="market-corridors fade-up">
+        <span class="corridor-tag">Whitefield / ITPL</span>
+        <span class="corridor-tag">Silk Board / Bellandur</span>
+        <span class="corridor-tag">MG Road / Trinity</span>
+        <span class="corridor-tag">HITEC City</span>
+        <span class="corridor-tag">Gachibowli</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPETITIVE LANDSCAPE -->
+<section class="competitive" id="landscape">
+  <div class="section-inner">
+    <div class="section-label fade-up">Competitive Landscape</div>
+    <h2 class="section-title fade-up">No one owns the transfer moment</h2>
+    <p class="section-subtitle fade-up">Existing players are strong &mdash; but none solve the specific station-to-office decision problem.</p>
+
+    <table class="comp-table fade-up">
+      <thead>
+        <tr>
+          <th>Capability</th>
+          <th>Google Maps</th>
+          <th>Namma Yatri</th>
+          <th>Rapido / Ola</th>
+          <th style="background:var(--primary-light);">FlowCity</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Corridor-specific station intelligence</td>
+          <td class="crossmark">&#10005;</td>
+          <td class="crossmark">&#10005;</td>
+          <td class="crossmark">&#10005;</td>
+          <td class="checkmark">&#10003;</td>
+        </tr>
+        <tr>
+          <td>Reliability scoring with reasoning</td>
+          <td class="crossmark">&#10005;</td>
+          <td class="crossmark">&#10005;</td>
+          <td class="crossmark">&#10005;</td>
+          <td class="checkmark">&#10003;</td>
+        </tr>
+        <tr>
+          <td>Repeat-commute optimization</td>
+          <td class="crossmark">&#10005;</td>
+          <td class="crossmark">&#10005;</td>
+          <td class="crossmark">&#10005;</td>
+          <td class="checkmark">&#10003;</td>
+        </tr>
+        <tr>
+          <td>Multimodal decision layer</td>
+          <td>Partial</td>
+          <td class="crossmark">&#10005;</td>
+          <td class="crossmark">&#10005;</td>
+          <td class="checkmark">&#10003;</td>
+        </tr>
+        <tr>
+          <td>Fallback & exception handling</td>
+          <td class="crossmark">&#10005;</td>
+          <td class="crossmark">&#10005;</td>
+          <td class="crossmark">&#10005;</td>
+          <td class="checkmark">&#10003;</td>
+        </tr>
+        <tr>
+          <td>Ride booking / supply network</td>
+          <td class="crossmark">&#10005;</td>
+          <td class="checkmark">&#10003;</td>
+          <td class="checkmark">&#10003;</td>
+          <td>Via partners</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- BUSINESS MODEL -->
+<section class="business-model" id="model">
+  <div class="section-inner">
+    <div class="section-label fade-up">Business Model</div>
+    <h2 class="section-title fade-up">Employer-side monetisation first</h2>
+    <p class="section-subtitle fade-up">Employers bear the cost of late arrivals, commute-driven attrition, and underutilised office space. They pay before consumers do.</p>
+
+    <div class="bm-timeline fade-up">
+      <div class="bm-phase">
+        <div class="bm-phase-label">Phase 1 &mdash; Months 1&ndash;6</div>
+        <h3>Employer Partnerships & Connector Placement</h3>
+        <p>B2B2C commute programs for major tech parks. Paid placement for verified shuttle and connector services, clearly labelled and trust-preserving.</p>
+      </div>
+      <div class="bm-phase">
+        <div class="bm-phase-label">Phase 2 &mdash; Months 6&ndash;12</div>
+        <h3>Referral Fees & Corporate Dashboards</h3>
+        <p>Referral commissions from connector providers. Corporate commute dashboards for HR and facilities teams, powered by aggregated commuter data.</p>
+      </div>
+      <div class="bm-phase">
+        <div class="bm-phase-label">Phase 3 &mdash; Year 2+</div>
+        <h3>Bundled Passes & Integrated Booking</h3>
+        <p>Corridor-level demand forecasting, bundled commute passes, and integrated booking commissions as FlowCity becomes the corridor infrastructure layer.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section class="quote-section">
+  <div class="quote-text fade-up">
+    &ldquo;Google Maps helps you understand the route.<br>
+    <strong>FlowCity helps you survive the transfer.</strong>&rdquo;
+  </div>
+  <div class="quote-attr fade-up">&mdash; FlowCity Product Vision</div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap" style="background: var(--white);">
+  <div class="section-inner">
+    <div class="section-label fade-up">Go-to-Market Roadmap</div>
+    <h2 class="section-title fade-up">Narrow wedge. Deep execution. Then expand.</h2>
+    <p class="section-subtitle fade-up">Start with one corridor, one transfer problem. Earn trust before scaling.</p>
+
+    <div class="rollout-phases">
+      <div class="rollout-card active fade-up">
+        <div class="rollout-badge">Phase 1 &bull; Now</div>
+        <h3>One City, 3&ndash;5 Corridors</h3>
+        <ul>
+          <li>Bengaluru launch: Whitefield, Silk Board, MG Road corridors</li>
+          <li>Manual corridor surveys + crowdsourced GPS data</li>
+          <li>2&ndash;3 employer partnerships for initial distribution</li>
+          <li>Target: 3x/week usage over 8 consecutive weeks</li>
+        </ul>
+      </div>
+      <div class="rollout-card fade-up">
+        <div class="rollout-badge">Phase 2 &bull; 6&ndash;12 Mo</div>
+        <h3>Station Network + Hyderabad</h3>
+        <ul>
+          <li>Expand Bengaluru station coverage</li>
+          <li>Commute assurance: guaranteed fallback</li>
+          <li>Hyderabad pilot: HITEC City & Gachibowli</li>
+          <li>Employer partnership scaling</li>
+        </ul>
+      </div>
+      <div class="rollout-card fade-up">
+        <div class="rollout-badge">Phase 3 &bull; 12&ndash;18 Mo</div>
+        <h3>Full Commute + New Cities</h3>
+        <ul>
+          <li>First-mile: home to metro</li>
+          <li>Full home-to-office recommendations</li>
+          <li>Integrated partner bookings</li>
+          <li>Pune and Chennai corridor expansion</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE ASK -->
+<section class="ask" id="ask">
+  <div class="section-inner">
+    <div class="section-label fade-up">The Ask</div>
+    <h2 class="section-title fade-up" style="font-size:2.5rem;">Own the corridor. Own the commute.</h2>
+    <p style="color:var(--gray-300); max-width:600px; margin:0 auto 2.5rem; font-size:1.05rem; line-height:1.7;" class="fade-up">
+      If FlowCity owns the station-to-office segment in 20&ndash;30 high-traffic corridors across 2&ndash;3 cities, it builds something no other player offers: <strong style="color:var(--white);">corridor-level operational intelligence with daily commuter trust.</strong>
+    </p>
+
+    <div class="ask-details fade-up">
+      <div class="ask-item">
+        <div class="ask-item-value">Seed</div>
+        <div class="ask-item-label">Funding Round</div>
+      </div>
+      <div class="ask-item">
+        <div class="ask-item-value">2 Cities</div>
+        <div class="ask-item-label">Bengaluru + Hyderabad</div>
+      </div>
+      <div class="ask-item">
+        <div class="ask-item-value">18 Mo</div>
+        <div class="ask-item-label">To Multi-City Expansion</div>
+      </div>
+    </div>
+
+    <a href="mailto:invest@flowcity.in" class="ask-cta fade-up">Let's Talk &rarr;</a>
+    <p style="color:var(--gray-500); margin-top:1rem; font-size:0.85rem;" class="fade-up">invest@flowcity.in</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">Flow<span>City</span></div>
+  <p>Your City. Your Flow.</p>
+  <p style="margin-top:0.5rem;">&copy; 2026 FlowCity. All rights reserved.</p>
+</footer>
+
+<script>
+  // Scroll-based nav shadow
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // Intersection Observer for fade-up animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
