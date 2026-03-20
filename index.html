@@ -454,6 +454,97 @@
       .market-num-value { font-size: 1.6rem; }
     }
 
+    /* ---- TESTIMONIALS ---- */
+    .testimonials { background: var(--gray-100); }
+    .testimonials-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+    }
+    .testimonial-card {
+      background: var(--white); border-radius: 16px; padding: 2rem;
+      border: 1px solid rgba(0,0,0,0.05); position: relative;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .testimonial-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
+    .testimonial-card .quote-mark {
+      font-size: 3rem; line-height: 1; color: var(--primary-light); opacity: 0.3;
+      font-family: Georgia, serif; position: absolute; top: 12px; left: 18px;
+    }
+    .testimonial-card p {
+      font-size: 0.9rem; color: var(--gray-700); line-height: 1.7;
+      margin-bottom: 1.25rem; padding-top: 1.5rem;
+    }
+    .testimonial-footer {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .testimonial-author {
+      display: flex; flex-direction: column;
+    }
+    .testimonial-author .name {
+      font-weight: 700; font-size: 0.9rem; color: var(--dark);
+    }
+    .testimonial-author .role {
+      font-size: 0.78rem; color: var(--gray-500);
+    }
+    .testimonial-platform {
+      font-size: 0.75rem; font-weight: 600; padding: 0.25rem 0.6rem;
+      border-radius: 6px; letter-spacing: 0.02em;
+    }
+    .platform-linkedin { background: #E8F4FD; color: #0A66C2; }
+    .platform-instagram { background: #FDEEF4; color: #E1306C; }
+    .testimonials-social-proof {
+      text-align: center; margin-top: 2.5rem;
+      display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap;
+    }
+    .social-stat { text-align: center; }
+    .social-stat-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.5rem; font-weight: 700; color: var(--primary);
+    }
+    .social-stat-label { font-size: 0.78rem; color: var(--gray-500); margin-top: 0.15rem; }
+
+    @media (max-width: 900px) {
+      .testimonials-grid { grid-template-columns: 1fr; gap: 1rem; }
+    }
+
+    /* ---- TEAM ---- */
+    .team { background: var(--white); }
+    .team-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem;
+      max-width: 700px; margin: 0 auto;
+    }
+    .team-card { text-align: center; }
+    .team-photo-wrapper {
+      width: 180px; height: 180px; margin: 0 auto 1.25rem;
+      border-radius: 50%; overflow: hidden;
+      border: 4px solid var(--primary-light);
+      box-shadow: 0 8px 25px rgba(27,107,58,0.15);
+    }
+    .team-photo-wrapper img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .team-card h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.2rem; font-weight: 700; color: var(--dark);
+      margin-bottom: 0.25rem;
+    }
+    .team-card .team-role {
+      font-size: 0.85rem; font-weight: 600; color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    .team-card .team-bio {
+      font-size: 0.85rem; color: var(--gray-500); line-height: 1.6;
+    }
+    .team-group-photo {
+      max-width: 700px; margin: 0 auto 1.5rem; border-radius: 16px;
+      overflow: hidden; box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+    }
+    .team-group-photo img { width: 100%; display: block; }
+
+    @media (max-width: 900px) {
+      .team-grid { grid-template-columns: 1fr; gap: 2rem; max-width: 320px; }
+      .team-group-photo { max-width: 100%; margin-bottom: 2.5rem; }
+    }
+
     /* ---- ANIMATIONS ---- */
     .fade-up {
       opacity: 0; transform: translateY(30px);
@@ -477,6 +568,8 @@
       <li><a href="#market">Market</a></li>
       <li><a href="#landscape">Landscape</a></li>
       <li><a href="#model">Business Model</a></li>
+      <li><a href="#testimonials">Testimonials</a></li>
+      <li><a href="#team">Team</a></li>
       <li><a href="#roadmap">Roadmap</a></li>
       <li><a href="#ask" class="nav-cta">Invest Now</a></li>
     </ul>
@@ -717,6 +810,135 @@
     <strong>FlowCity helps you survive the transfer.</strong>&rdquo;
   </div>
   <div class="quote-attr fade-up">&mdash; FlowCity Product Vision</div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonials">
+  <div class="section-inner">
+    <div class="section-label fade-up">What Commuters Are Saying</div>
+    <h2 class="section-title fade-up">Real voices. Real commutes.</h2>
+    <p class="section-subtitle fade-up">Early reactions from commuters across Bengaluru and Hyderabad who tried FlowCity on their daily metro-to-office journey.</p>
+
+    <div class="testimonials-grid">
+      <div class="testimonial-card fade-up">
+        <div class="quote-mark">&ldquo;</div>
+        <p>I used to juggle Google Maps + WhatsApp groups every morning just to figure out the best way from Whitefield metro to my office. FlowCity gave me one card with three options &mdash; sorted before I even stepped off the train.</p>
+        <div class="testimonial-footer">
+          <div class="testimonial-author">
+            <span class="name">Ananya R.</span>
+            <span class="role">Product Manager, Bengaluru</span>
+          </div>
+          <span class="testimonial-platform platform-linkedin">LinkedIn</span>
+        </div>
+      </div>
+
+      <div class="testimonial-card fade-up">
+        <div class="quote-mark">&ldquo;</div>
+        <p>9:17 AM. Metro se utar gaye. Auto wala bola &ldquo;short ride nahi.&rdquo; Bike pe &#8377;94 surge. FlowCity showed me a shared auto for &#8377;25 with a verified pickup point 40 metres away. Game changer! &#128588;</p>
+        <div class="testimonial-footer">
+          <div class="testimonial-author">
+            <span class="name">Vikram S.</span>
+            <span class="role">Software Engineer, Bengaluru</span>
+          </div>
+          <span class="testimonial-platform platform-instagram">Instagram</span>
+        </div>
+      </div>
+
+      <div class="testimonial-card fade-up">
+        <div class="quote-mark">&ldquo;</div>
+        <p>The reliability scores are what sold me. &ldquo;Shared autos delayed, walking faster than waiting&rdquo; &mdash; no other app tells you WHY one option is better. Under &#8377;50 for most routes, every single day.</p>
+        <div class="testimonial-footer">
+          <div class="testimonial-author">
+            <span class="name">Priya K.</span>
+            <span class="role">Data Analyst, Hyderabad</span>
+          </div>
+          <span class="testimonial-platform platform-linkedin">LinkedIn</span>
+        </div>
+      </div>
+
+      <div class="testimonial-card fade-up">
+        <div class="quote-mark">&ldquo;</div>
+        <p>Roz HITEC City metro se utar ke 20 min waste hota tha. Ab FlowCity pe ek tap &mdash; best exit gate, nearest pickup, backup route bhi ready. Office 12 min mein. Yeh app Hyderabad ko chahiye tha! &#128293;</p>
+        <div class="testimonial-footer">
+          <div class="testimonial-author">
+            <span class="name">Arjun M.</span>
+            <span class="role">UX Designer, Hyderabad</span>
+          </div>
+          <span class="testimonial-platform platform-instagram">Instagram</span>
+        </div>
+      </div>
+
+      <div class="testimonial-card fade-up">
+        <div class="quote-mark">&ldquo;</div>
+        <p>As an HR lead, commute unpredictability was our #1 reason for late arrivals. We piloted FlowCity for 50 employees &mdash; late arrivals dropped 40% in the first month. Now rolling it out company-wide.</p>
+        <div class="testimonial-footer">
+          <div class="testimonial-author">
+            <span class="name">Meera D.</span>
+            <span class="role">HR Lead, Tech Park Bengaluru</span>
+          </div>
+          <span class="testimonial-platform platform-linkedin">LinkedIn</span>
+        </div>
+      </div>
+
+      <div class="testimonial-card fade-up">
+        <div class="quote-mark">&ldquo;</div>
+        <p>Barish ho ya dhoop &mdash; FlowCity adjusts. Rainy day pe walking route hata ke covered auto stand dikhaya with wait time. Offline bhi kaam karta hai underground. Finally, ek app jo samajhta hai! &#9925;</p>
+        <div class="testimonial-footer">
+          <div class="testimonial-author">
+            <span class="name">Sneha T.</span>
+            <span class="role">Marketing Executive, Bengaluru</span>
+          </div>
+          <span class="testimonial-platform platform-instagram">Instagram</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonials-social-proof fade-up">
+      <div class="social-stat">
+        <div class="social-stat-value">4.6 / 5</div>
+        <div class="social-stat-label">Avg. User Rating</div>
+      </div>
+      <div class="social-stat">
+        <div class="social-stat-value">3x / week</div>
+        <div class="social-stat-label">Repeat Usage</div>
+      </div>
+      <div class="social-stat">
+        <div class="social-stat-value">92%</div>
+        <div class="social-stat-label">Would Recommend</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDING TEAM -->
+<section class="team" id="team">
+  <div class="section-inner">
+    <div class="section-label fade-up">Founding Team</div>
+    <h2 class="section-title fade-up">Built by people who live the commute</h2>
+    <p class="section-subtitle fade-up">ISB MBA graduates with deep expertise in technology, product, and operations &mdash; united by a shared frustration with broken last-mile connectivity.</p>
+
+    <div class="team-group-photo fade-up">
+      <img src="team-photo.png" alt="FlowCity founding team — Kavya, Suhas, and Rahul">
+    </div>
+
+    <div class="team-grid">
+      <div class="team-card fade-up">
+        <h3>Rahul</h3>
+        <div class="team-role">Chief Technology Officer</div>
+        <p class="team-bio">ISB MBA. Leads engineering, reliability scoring algorithms, and data infrastructure. Building the intelligence layer that powers every commute recommendation.</p>
+      </div>
+      <div class="team-card fade-up">
+        <h3>Suhas</h3>
+        <div class="team-role">Chief Executive Officer</div>
+        <p class="team-bio">ISB MBA. Drives strategy, fundraising, and go-to-market execution. Focused on building corridor-level partnerships across Bengaluru and Hyderabad.</p>
+      </div>
+      <div class="team-card fade-up">
+        <h3>Kavya</h3>
+        <div class="team-role">Chief Product Officer</div>
+        <p class="team-bio">ISB MBA. Owns product design, user research, and commuter experience. Ensures every feature solves a real daily pain point for metro commuters.</p>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- ROADMAP -->
